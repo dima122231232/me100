@@ -1,0 +1,9 @@
+.Archive{
+    height:200svh;
+}
+.Archive div{
+    width:calc(100vw - var(--indent)*2);
+    height:100%;
+    background-color: #fff;
+    margin:0 auto;
+}

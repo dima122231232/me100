@@ -1,0 +1,64 @@
+.Hero{
+    height: 100svh;
+}
+.Hero__ascii{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+    position: relative;
+    will-change: scale ;
+}
+.ascii-effect {
+    position: relative;
+    width: calc(100vw - var(--indent)*2);
+    height: calc(100vh - var(--indent)*2);
+    will-change: filter , clipPath;
+}
+
+.ascii-effect__image {
+    height: 80svh;
+    opacity: 0;
+}
+
+.ascii-effect__video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 1;
+}
+
+.ascii-effect__canvas,
+.ascii-effect__overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+}
+
+.Hero__content{
+    position: absolute;
+    bottom:-1px;
+    left:0;
+    height:40svh;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+    width: 100%;
+    padding:1rem;
+}
+.Hero__text{
+    display: flex;
+    gap:6rem;
+}
+.Hero__text h1{
+    max-width:700px;
+    text-transform:capitalize;
+    color: #888;
+}
+.Hero__text h1 span{
+    color: var(--base-100);
+}
+.Hero__text p{
+    max-width:340px;
+}

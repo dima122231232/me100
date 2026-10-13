@@ -1,0 +1,21 @@
+.Statement{
+    height:auto;
+    display: flex;
+    justify-content: center;
+    padding:6rem 0 12rem;
+}
+.Statement__content{
+    max-width:900px;
+    display: flex;
+    flex-direction: column;
+    gap:2rem;
+}
+.Statement__title{
+    text-align: center;
+}
+.Statement__text{
+    text-align: center;
+}
+.Statement__text span{
+    color:var(--text-accent);
+}

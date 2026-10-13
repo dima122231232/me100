@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "twk";
+  src: url("/fonts/TWK/TWKLausanne-200.woff2") format("woff2");
+  font-weight: 200;
+  font-style:normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "twk";
+  src: url("/fonts/TWK/TWKLausanne-350.woff2") format("woff2");
+  font-weight: 350;
+  font-style:normal;
+  font-display: swap;
+}
+@font-face {
+    font-family: "Space Mono";
+    src: url("/fonts/SpaceMono-700.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}

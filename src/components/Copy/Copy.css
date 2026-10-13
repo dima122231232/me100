@@ -1,0 +1,15 @@
+.line,
+.word,
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+[data-copy-scramble]:not(.copy-scramble-ready) {
+  visibility: hidden;
+}
+
+[data-copy-slide]:not(.copy-slide-ready) {
+  visibility: hidden;
+}
+.line-mask{padding-bottom:.25rem;}
