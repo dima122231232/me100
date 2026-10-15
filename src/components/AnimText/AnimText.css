@@ -1,3 +1,14 @@
 .AnimText {
     display: inline-block;
+    cursor: cell;
+    font-family: var(--font-title-effect);
+    word-spacing: -1em;
+    font-weight:500;
+}
+.AnimText .line{
+    line-height:92%;
+    letter-spacing: -0.075rem;
+}
+.AnimText .chars{
+    border: 1px solid transparent;
 }

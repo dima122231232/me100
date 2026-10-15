@@ -13,7 +13,7 @@ export default function Home() {
         <div className="Statement__content">
             <AnimText>
                 <h2 className="Statement__title md">
-                    A website can do more than sell. It can make people feel something.
+                    A Website Can Do More Than Sell. It Can Make People Feel Something.
                 </h2>
             </AnimText>
             <p className="Statement__text md">
@@ -21,7 +21,8 @@ export default function Home() {
             </p>
         </div>
     </section>
-    <Archive/>
+    {/* <Archive/> */}
+    <div style={{height:"100svh"}}></div>
     </>
   );
 }

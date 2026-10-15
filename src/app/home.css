@@ -2,10 +2,10 @@
     height:auto;
     display: flex;
     justify-content: center;
-    padding:6rem 0 12rem;
+    /* padding:4rem 0; */
 }
 .Statement__content{
-    max-width:900px;
+    max-width:790px;
     display: flex;
     flex-direction: column;
     gap:2rem;

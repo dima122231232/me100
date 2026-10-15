@@ -9,12 +9,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CELL_SIZE = 28;
+const CELL_SIZE = 22;
 const CELL_GAP = -3;
 const CELL_STEP = CELL_SIZE + CELL_GAP;
-const FPS = 14;
+const FPS = 15;
 
-const ASCII_CHARS = "@$#MGWI%";
+const ASCII_CHARS = "K$#MGWF@";
 const CLUSTER_COUNT = ASCII_CHARS.length;
 const KMEANS_ITERATIONS = 5;
 
@@ -371,43 +371,53 @@ export default function Hero() {
             }
         };
 
+        // gsap.fromTo(".Archive",{
+        //     y:0,
+        //     // scaleX:.95
+        // },{
+        //     y:0,
+        //     scale:1,
+        //     ease:"none",
+        //     scrollTrigger: {
+        //     trigger: ".Hero",
+        //     start: "bottom bottom",
+        //     end: () => `+=${window.innerHeight}px`,
+        //     scrub: true, 
+        //     }
+        // })
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: ".Hero",
                 start: "bottom bottom",
-                end: () => `+=${window.innerHeight}px`,
+                end: () => `+=${window.innerHeight*.8}px`,
                 scrub: true,
+                pin:true,
                 onUpdate: (self) => {
                     if (!isInitialized) return;
 
-                    if (self.progress >= 0.75) {
-                        pauseAscii();
+                    if (self.progress >= 1) {
+                        gsap.delayedCall(.5, pauseAscii)
                     } else {
                         resumeAscii();
                     }
                 },
             }
-        }).fromTo(content,
-            {
-                filter: "brightness(1)",
-                clipPath: "inset(0 0 0 0)",
-
-            },
-            {
-                filter: "brightness(-.25)",
-                clipPath: "inset(0 0 25% 0)",
-                ease: "none",
-            },
+        })
+        .fromTo(content,
+            {clipPath: "inset(0 0 0 0)"},
+            {clipPath: "inset(15% 25% 15% 25%)",ease: "power1.out"},
+            0
+        ).fromTo(".Hero__ascii-bg--1, .Hero__ascii-bg--2,.Hero__ascii-bg--3",
+            {clipPath: "inset(0 0 0 0)"},
+            {clipPath: "inset(15% 25% 15% 25%)",ease: "power1.out"},
             0
         )
-        // .fromTo(".Hero__ascii", {
-        //     // y:0,
-        //     scale: 1,
-        // }, {
-        //     // y:0,
-        //     scale: .9,
-        //     ease: "none",
-        // }, 0);
+        .fromTo(video, {
+            filter: "brightness(1)",
+        }, {
+            filter: "brightness(0)",
+            ease: "none",
+        }, 0);
 
         const resizeObserver = new ResizeObserver(() => {
             setupCanvas();
@@ -450,34 +460,39 @@ export default function Hero() {
         <>
             <section className="Hero">
                 <div className="Hero__ascii">
+
+                    <div className="Hero__ascii-bg Hero__ascii-bg--1"></div>
+                    <div className="Hero__ascii-bg Hero__ascii-bg--2"></div>
+                    <div className="Hero__ascii-bg Hero__ascii-bg--3"></div>
+
                     <div className="ascii-effect" ref={contentRef}>
-                        <video
-                            className="ascii-effect__video"
-                            ref={videoRef}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                        >
-                            <source src="/hero/video.mp4" type="video/mp4" />
-                        </video>
+                            <video
+                                className="ascii-effect__video"
+                                ref={videoRef}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                            >
+                                <source src="/hero/video.mp4" type="video/mp4" />
+                            </video>
 
-                        <canvas
-                            className="ascii-effect__canvas"
-                            ref={canvasRef}
-                        />
+                            <canvas
+                                className="ascii-effect__canvas"
+                                ref={canvasRef}
+                            />
 
-                        <canvas
-                            className="ascii-effect__overlay"
-                            ref={overlayRef}
-                        />
+                            <canvas
+                                className="ascii-effect__overlay"
+                                ref={overlayRef}
+                            />
 
-                        <div className="Hero__content">
-                            <div className="Hero__text">
-                                <h1><span>Dmytro Matiushenko</span> , creative developer & designer & freelancer</h1>
-                                <p>Designs and builds websites, products, and digital systems with a focus on clarity, performance, and usability.</p>
+                            <div className="Hero__content">
+                                <div className="Hero__text">
+                                    <h1><span>Dmytro Matiushenko</span> , creative developer & designer & freelancer</h1>
+                                    <p>Designs and builds websites, products, and digital systems with a focus on clarity, performance, and usability.</p>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </section>

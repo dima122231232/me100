@@ -2,16 +2,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-
+let reg = 1.5;
 const METEOR = {
-    coreRadius: 1,
-    tailLength: 6,
-    tailWidth: 2.8,
-    tailAmount:6,
+    coreRadius: .8*reg,
+    tailLength: 4*reg,
+    tailWidth: 2*reg,
+    tailAmount:4*reg,
 
-    headLife: 0.2,
+    headLife: 0.1,
     trailLife: 0.1,
-    fadePower: 0.2,
+    fadePower: 0.1,
     tailIntensity: 10,
     sampleStep: 1,
 

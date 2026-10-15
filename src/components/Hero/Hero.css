@@ -1,19 +1,18 @@
 .Hero{
     height: 100svh;
-}
-.Hero__ascii{
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    height:100%;
+}
+.Hero__ascii{
     position: relative;
-    will-change: scale ;
 }
 .ascii-effect {
     position: relative;
+    cursor: cell;
     width: calc(100vw - var(--indent)*2);
     height: calc(100vh - var(--indent)*2);
-    will-change: filter , clipPath;
 }
 
 .ascii-effect__image {
@@ -62,3 +61,24 @@
 .Hero__text p{
     max-width:340px;
 }
+/* .Hero__ascii-bg--wrapper{
+    position: relative;
+    inset: 0;
+} */
+.Hero__ascii-bg{
+    position: absolute;
+    inset: 0;
+    background-color:#EFD525;
+    transition: .09s;
+}
+.Hero__ascii-bg--2{
+    background-color: #ED370B;
+    transition: .12s;
+    z-index:-1;
+}
+.Hero__ascii-bg--3{
+    background-color: #E486F1;
+    transition: .13s;
+    z-index:-2;
+}
+
