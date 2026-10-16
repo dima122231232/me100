@@ -21,7 +21,7 @@ export default function Home() {
             </p>
         </div>
     </section>
-    {/* <Archive/> */}
+    <Archive/>
     <div style={{height:"100svh"}}></div>
     </>
   );

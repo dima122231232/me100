@@ -1,9 +1,11 @@
 .Archive{
-    height:200svh;
+    height:100svh;
+    margin-top:calc((100svh - (var(--indent))) - 75svh);
+    width: 100%;
 }
-.Archive div{
-    width:calc(100vw - var(--indent)*2);
-    height:100%;
-    background-color: #fff;
-    margin:0 auto;
+
+.Archive canvas{
+    display: block;
+    width: 100%;
+    height: 100%;
 }

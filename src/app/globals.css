@@ -9,6 +9,12 @@
 
     --text-muted:#888;
     --text-accent:firebrick;
+    --accent-red: red;
+    --accent-pink: #E486F1;
+    --accent-lime: #80AB10;
+    --accent-purple: #9889E9;
+    --accent-orange: #ED370B;
+    --accent-yellow: #EFD525;
 }
 
 body{
@@ -38,7 +44,7 @@ h3.md{
 }
 p{
     font-weight: var(--font-main);
-    font-size:1.125rem;
+    font-size:1rem;
     color: var(--base-100);
     letter-spacing: 0%;
     line-height: 110%;

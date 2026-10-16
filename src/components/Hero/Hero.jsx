@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react";
 import useMouseOverlay from "./useMouseOverlay";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger , SplitText);
 
 const CELL_SIZE = 22;
 const CELL_GAP = -3;
@@ -42,7 +43,6 @@ const getNearestCluster = (cell, clusters) => {
     return nearestIndex;
 };
 
-
 export default function Hero() {
     const contentRef = useRef(null);
     const videoRef = useRef(null);
@@ -58,8 +58,9 @@ export default function Hero() {
         const content = contentRef.current;
         const video = videoRef.current;
         const canvas = canvasRef.current;
+        const hero = content?.closest(".Hero");
 
-        if (!content || !video || !canvas) return;
+        if (!content || !video || !canvas || !hero) return;
 
         const asciiFont = getComputedStyle(content)
             .getPropertyValue("--font-main")
@@ -83,7 +84,10 @@ export default function Hero() {
         let destroyed = false;
         let isAsciiActive = false;
         let isInitialized = false;
+        let pauseAsciiCall = null;
+        let isAtEnd = false;
 
+    
         const setupCanvas = () => {
             if (destroyed) return;
 
@@ -254,7 +258,6 @@ export default function Hero() {
 
             for (const cell of cells) {
                 const clusterIndex = getNearestCluster(cell, colorClusters);
-
                 cell.char = ASCII_CHARS[clusterIndex];
             }
         };
@@ -371,53 +374,71 @@ export default function Hero() {
             }
         };
 
-        // gsap.fromTo(".Archive",{
-        //     y:0,
-        //     // scaleX:.95
-        // },{
-        //     y:0,
-        //     scale:1,
-        //     ease:"none",
-        //     scrollTrigger: {
-        //     trigger: ".Hero",
-        //     start: "bottom bottom",
-        //     end: () => `+=${window.innerHeight}px`,
-        //     scrub: true, 
-        //     }
-        // })
+        let textSee = SplitText.create(".Hero__opacity-text p", { type: "lines , words",mask: "lines"});
+        gsap.set(textSee.words, {yPercent:100})
+
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: ".Hero",
-                start: "bottom bottom",
-                end: () => `+=${window.innerHeight*.8}px`,
+                trigger: hero,
+                start: "top top",
+                end: () => `+=${window.innerHeight * .8}px`,
                 scrub: true,
-                pin:true,
                 onUpdate: (self) => {
                     if (!isInitialized) return;
 
                     if (self.progress >= 1) {
-                        gsap.delayedCall(.5, pauseAscii)
+                        if (!isAtEnd) {
+                            isAtEnd = true;
+                            pauseAsciiCall = gsap.delayedCall(.5, pauseAscii);
+                        }
                     } else {
+                        isAtEnd = false;
+                        pauseAsciiCall?.kill();
+                        pauseAsciiCall = null;
                         resumeAscii();
                     }
+                },onEnterBack: () => {
+                    gsap.to(textSee.words, {
+                        duration: .4, 
+                        stagger:.012,
+                        yPercent:100,     
+                        ease:"power2.out" 
+                    });
                 },
+            },onComplete:()=>{
+                gsap.to(textSee.words, {
+                    duration: .4, 
+                    stagger:.012,
+                    yPercent:0,     
+                    ease:"power2.out" 
+                });
             }
         })
         .fromTo(content,
-            {clipPath: "inset(0 0 0 0)"},
-            {clipPath: "inset(15% 25% 15% 25%)",ease: "power1.out"},
+            { clipPath: "inset(0 0 0 0)" },
+            { clipPath: "inset(15% 25% 15% 25%)", ease: "power1.out" },
             0
-        ).fromTo(".Hero__ascii-bg--1, .Hero__ascii-bg--2,.Hero__ascii-bg--3",
-            {clipPath: "inset(0 0 0 0)"},
-            {clipPath: "inset(15% 25% 15% 25%)",ease: "power1.out"},
+        ).fromTo(".Hero__ascii-bg--1, .Hero__ascii-bg--2, .Hero__ascii-bg--3",
+            { clipPath: "inset(0 0 0 0)" },
+            { clipPath: "inset(15% 25% 15% 25%)", ease: "power1.out" },
             0
-        )
-        .fromTo(video, {
-            filter: "brightness(1)",
-        }, {
-            filter: "brightness(0)",
-            ease: "none",
-        }, 0);
+        ).fromTo(video,
+            { filter: "brightness(1)" },
+            { filter: "brightness(0)", ease: "none" },
+            0
+        );
+        gsap.fromTo(".Hero__opacity-text",{
+            y:0,
+        },{
+            y: window.innerHeight*.7,
+            ease:"none",
+            scrollTrigger: {
+            trigger: ".Hero",
+            start: "bottom bottom",
+            end: () => `+=${window.innerHeight*.7}px`,
+            scrub: true, 
+            }
+        })
 
         const resizeObserver = new ResizeObserver(() => {
             setupCanvas();
@@ -444,7 +465,9 @@ export default function Hero() {
             isInitialized = false;
             isAsciiActive = false;
 
+            pauseAsciiCall?.kill();
             cancelAnimationFrame(animationFrameId);
+
             animationFrameId = 0;
 
             video.pause();
@@ -457,45 +480,55 @@ export default function Hero() {
     }, [setupOverlay, renderOverlay]);
 
     return (
-        <>
-            <section className="Hero">
+        <section className="Hero">
+            <div className="Hero__sticky">
                 <div className="Hero__ascii">
-
                     <div className="Hero__ascii-bg Hero__ascii-bg--1"></div>
                     <div className="Hero__ascii-bg Hero__ascii-bg--2"></div>
                     <div className="Hero__ascii-bg Hero__ascii-bg--3"></div>
 
                     <div className="ascii-effect" ref={contentRef}>
-                            <video
-                                className="ascii-effect__video"
-                                ref={videoRef}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                            >
-                                <source src="/hero/video.mp4" type="video/mp4" />
-                            </video>
+                        <video
+                            className="ascii-effect__video"
+                            ref={videoRef}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                        >
+                            <source src="/hero/video.mp4" type="video/mp4" />
+                        </video>
 
-                            <canvas
-                                className="ascii-effect__canvas"
-                                ref={canvasRef}
-                            />
+                        <canvas
+                            className="ascii-effect__canvas"
+                            ref={canvasRef}
+                        />
 
-                            <canvas
-                                className="ascii-effect__overlay"
-                                ref={overlayRef}
-                            />
+                        <canvas
+                            className="ascii-effect__overlay"
+                            ref={overlayRef}
+                        />
 
-                            <div className="Hero__content">
-                                <div className="Hero__text">
-                                    <h1><span>Dmytro Matiushenko</span> , creative developer & designer & freelancer</h1>
-                                    <p>Designs and builds websites, products, and digital systems with a focus on clarity, performance, and usability.</p>
-                                </div>
+                        <div className="Hero__content">
+                            <div className="Hero__text">
+                                <h1>
+                                    <span>Dmytro Matiushenko</span>, creative developer & designer & freelancer
+                                </h1>
+                                <p>
+                                    Designs and builds websites, products, and digital systems with a focus on clarity, performance, and usability.
+                                </p>
                             </div>
+                        </div>
+                    </div>
+                    <div className="Hero__opacity-content">
+                        <div className="Hero__opacity-text">
+                            <p ><span>[any style]</span> design =&gt;</p>
+                            <p>&lt;= code <span>[any complexity]</span></p>
+                            {/* <div className="line"></div> */}
+                        </div>
                     </div>
                 </div>
-            </section>
-        </>
+            </div>
+        </section>
     );
 }

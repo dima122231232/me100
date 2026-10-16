@@ -1,13 +1,62 @@
-.Hero{
-    height: 100svh;
+.Hero {
+    position: relative;
     width: 100%;
+    height: 180svh;
+}
+
+.Hero__sticky {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.Hero__ascii{
+
+.Hero__ascii {
     position: relative;
 }
+.Hero__opacity-content{
+    position: absolute;
+    inset:0;
+    top:50%;
+    z-index: -1;
+}
+.Hero__opacity-text{
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    overflow: hidden;
+    position: relative;
+}
+.Hero__opacity-text p{
+    color: var(--accent-pink);
+    cursor: cell;
+}
+/* .Hero__opacity-text .line{
+    position: absolute;
+    height: 1px;
+    width:100%;
+    background-color:#E486F1;
+    opacity:1;
+    bottom:0;
+    z-index:-1;
+} */
+
+.Hero__opacity-text span{
+    color: var(--text-muted);
+    font-size: .75rem;
+    font-weight:200;
+}
+/* .Hero__opacity-text p{
+    width:calc(25% + var(--indent));
+    text-align: center;
+    transform: translateX(var(--indent));
+} */
+/* .Hero__opacity-text p:first-child{
+     transform: translateX(calc(var(--indent)*-1));
+} */
 .ascii-effect {
     position: relative;
     cursor: cell;
@@ -60,24 +109,22 @@
 }
 .Hero__text p{
     max-width:340px;
+    font-size: 1.15rem;
 }
-/* .Hero__ascii-bg--wrapper{
-    position: relative;
-    inset: 0;
-} */
+
 .Hero__ascii-bg{
     position: absolute;
     inset: 0;
-    background-color:#EFD525;
+    background-color:var(--accent-yellow);
     transition: .09s;
 }
 .Hero__ascii-bg--2{
-    background-color: #ED370B;
+    background-color: var(--accent-orange);
     transition: .12s;
     z-index:-1;
 }
 .Hero__ascii-bg--3{
-    background-color: #E486F1;
+    background-color: var(--accent-purple);
     transition: .13s;
     z-index:-2;
 }
